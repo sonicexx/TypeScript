@@ -1,5 +1,5 @@
 {
-  "name": "01-ts-todo-list",
+  "name": "test",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -8,5 +8,8 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "vite": "^4.1.2"
+  }
 }

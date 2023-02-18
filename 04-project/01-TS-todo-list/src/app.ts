@@ -1,83 +1,86 @@
-import { ITodoData } from './js/typings';
+import TodoEvent from './js/TodoEvent';
+import { iTodoData } from './js/typing';
 
-import TodoEvent from './js/TodoEvents';
+// 获取元素：input、按钮、list
+const oInput: HTMLInputElement = document.querySelector('.todo-input')!;
+const oAddBtn: HTMLElement = document.querySelector('.todo-add') as HTMLElement;
+const oList: HTMLElement = document.querySelector('.todo-list')!;
 
-const oInput: HTMLInputElement = document.querySelector('input')!;
-const oAddBtn: HTMLElement = document.querySelector('button')!;
-const oTodoList: HTMLElement = document.querySelector('.todo-list')!;
+// console.log(oInput.parentNode);
 
-const tododata: ITodoData[] = [
+//初始化列表数据
+// 引用 typing.ts 文件中声明的单个数据格式 iTodoData
+const todoData: iTodoData[] = [
   {
     id: 1,
-    content: '123',
+    content: '111111111',
     completed: true,
   },
   {
     id: 2,
-    content: '22222',
+    content: '22222222',
     completed: false,
   },
   {
     id: 3,
-    content: '55555',
-    completed: true,
+    content: '3333333333',
+    completed: false,
   },
 ];
 
-const todoEvent: TodoEvent = new TodoEvent(tododata, oTodoList);
+//   实例化 TodoEvent
+const todoEvent = new TodoEvent(todoData, oList);
 
-const init = (): void => {
+const init: () => void = function () {
   bindEvent();
+
+  todoEvent.initDom();
 };
 
 const bindEvent = function (): void {
   oAddBtn.addEventListener('click', handleAddBtnClick);
-  oTodoList.addEventListener('click', handleListClick);
+  oList.addEventListener('click', handleListClick);
 };
 
-tododata.forEach((item: ITodoData) => todoEvent.addTodo(item));
-
-let id = tododata.length
-  ? Math.max(...tododata.map((item: ITodoData) => item.id))
-  : 0;
-// prettier-ignore
 const handleAddBtnClick = function (): void {
-    const val = oInput.value.trim()
-    
-    if(val.length){
-        const ret:number|undefined = todoEvent.addTodo({
-            id:++id,
-            content:val,
-            completed:false
-        })
-        console.log(tododata);
-        if(ret && ret === 1001){
-            alert('列表项以存在')
-            return
-        }
+  const val: string = oInput.value.trim();
 
-        oInput.value = ''
-    }
+  oInput.value = '';
+  if (!val.length) return;
+  const ret = todoEvent.eventAddTodo({
+    id: 10,
+    content: val,
+    completed: false,
+  });
 
+  if (ret && ret === 1001) {
+    console.log('数据添加失败，已存在数据');
+  }
 };
-// prettier-ignore
-const handleListClick = function (e: MouseEvent): void {
-    const tar = e.target as HTMLElement
-    const tagName = tar.tagName.toLowerCase()
 
-    if(tagName === 'input' || tagName === 'button'){
-        const id:number = +tar.dataset.id!
-        switch(tagName){
-            case 'input':
-                todoEvent.toggleCompleted(tar, id)
-                break;
-            case 'button':
-                todoEvent.removeTodo(tar,id)
-                break;
-            default:
-                break;
-        }
+const handleListClick = function (e: MouseEvent): void {
+  // 获取鼠标点击对象
+  const tar: HTMLElement = e.target as HTMLElement;
+
+  // 获取点击对象 tag 名称：注意大小写
+  const tagName: string = tar.tagName.toLowerCase();
+
+  // 根据不同 tag 名处理事件 TODO
+  if (tagName === 'input' || tagName === 'button') {
+    const id = +tar.dataset.id!;
+    console.log(tar.dataset.id);
+
+    switch (tagName) {
+      case 'input':
+        todoEvent.eventToggleComplete(tar, id);
+        break;
+      case 'button':
+        todoEvent.eventRemoveTodo(tar, id);
+        break;
+      default:
+        break;
     }
+  }
 };
 
 init();

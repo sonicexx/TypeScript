@@ -1,42 +1,49 @@
 import TodoTemplate from './TodoTemplate';
-import { ITodoData } from './typings';
-import { createItem, findParentNode } from './utils';
+import { iTodoData } from "./typing";
+import { create } from './utils';
 
 class TodoDom extends TodoTemplate {
-  private todoWrapper: HTMLElement;
+    todoWrapper:HTMLElement
 
-  constructor(todoWrapper: HTMLElement) {
-    super();
-    this.todoWrapper = todoWrapper;
-  }
-
-  protected initList(tododata: ITodoData[]) {
-    if (tododata.length) {
-      // TODO
-      const oFrag: DocumentFragment = document.createDocumentFragment();
-      tododata.map((todo: ITodoData) => {
-        const oItem = createItem('div', 'todo-item', this.todoView(todo));
-        oFrag.appendChild(oItem);
-      });
-      this.todoWrapper.appendChild(oFrag);
+    constructor(todoWraper:HTMLElement){
+        super()
+        this.todoWrapper = todoWraper
     }
-  }
 
-  protected addItem(todo: ITodoData) {
-    const oItem = createItem('div', 'todo-item', this.todoView(todo));
-    this.todoWrapper.appendChild(oItem);
-  }
+    protected initRender(todoData:iTodoData[]):void{
+        if(!todoData.length)return
+        const frag:DocumentFragment = document.createDocumentFragment()
+        todoData.forEach((todo:iTodoData)=>{
+            const oItem:HTMLElement = create('div', 'todo-item', this.todoView(todo))
+            frag.appendChild(oItem)
+        })
+        this.todoWrapper.appendChild(frag)
+    }
+    
+    protected addItem(todo:iTodoData){
+        const oItem:HTMLElement = create('div', 'todo-item', this.todoView(todo))
+        this.todoWrapper.appendChild(oItem)
+    }
 
-  protected removeItem(target: HTMLElement) {
-    const oParentNode = findParentNode(target, 'todo-item');
-    oParentNode?.remove();
-  }
+    protected removeItem(target:HTMLElement){
+        // const oParentNode = findParentNode(target, 'todo-item')
+        // oParentNode?.remove()
+        // target.parentNode?.removeChild()
+        // console.log(target.parentNode);
+        while(target = target.parentNode as HTMLElement){
+            if(target.className === 'todo-item'){
+                console.log(target);
+                target.remove()
+                return
+            }
+        }
+    }
 
-  protected changeCompleted(target: HTMLElement, completed: boolean) {
-    const oParentNode: HTMLElement = findParentNode(target, 'todo-item')!;
-    const oContent: HTMLElement = oParentNode.querySelector('span')!;
-
-    oContent.style.textDecoration = completed ? 'line-through' : 'none';
-  }
+    protected changeComplete(target:HTMLElement, completed:boolean){
+        const oParentNode:HTMLElement = target.parentNode as HTMLElement
+        const oSpan = oParentNode.querySelector('span')!
+        oSpan.style.textDecoration = completed?'line-through':'none'
+    }
 }
+
 export default TodoDom;
