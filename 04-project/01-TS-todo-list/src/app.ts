@@ -33,8 +33,6 @@ const todoEvent = new TodoEvent(todoData, oList);
 
 const init: () => void = function () {
   bindEvent();
-
-  todoEvent.initDom();
 };
 
 const bindEvent = function (): void {
@@ -68,7 +66,6 @@ const handleListClick = function (e: MouseEvent): void {
   // 根据不同 tag 名处理事件 TODO
   if (tagName === 'input' || tagName === 'button') {
     const id = +tar.dataset.id!;
-    console.log(tar.dataset.id);
 
     switch (tagName) {
       case 'input':
