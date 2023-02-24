@@ -1,5 +1,9 @@
 <template>
-  <div>item</div>
+  <div>--{{ item }}</div>
 </template>
 
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+const props = defineProps({
+  item: String,
+});
+</script>
