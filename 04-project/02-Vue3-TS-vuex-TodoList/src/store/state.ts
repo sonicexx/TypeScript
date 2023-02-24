@@ -1,4 +1,15 @@
-export default {};
+import { IState } from '@/typings';
+
+// const state: IState = {
+//   list: [],
+// };
+// export default state;
+
+// 简写
+export default <IState>{
+  // 导出 state，使用 IState 类型约束
+  list: [],
+};
 
 /*
 状态 以及 状态类型划分

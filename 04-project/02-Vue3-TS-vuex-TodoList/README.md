@@ -24,3 +24,6 @@
        1. 完成/未完成的选择...checkbox
        2. 删除该项...button
        3. 控制状态的按钮...button
+
+1. 组件 => 通过自定义 hooks 得到加工数据的方法 setTodo
+2. 加工好的数据 => dispatch actions 中的 SET_TODO 方法 => commit mutation 中的 SET_TODO 方法 => 修改 state 中的数据
