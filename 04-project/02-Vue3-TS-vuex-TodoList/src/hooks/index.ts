@@ -9,9 +9,9 @@ import { Store, useStore } from 'vuex';
 export interface IUseTodo {
   setTodo: (value: string) => void;
   setTodoList: () => void;
-  removeTodo: () => void;
-  setStatus: () => void;
-  setDoing: () => void;
+  removeTodo: (id: number) => void;
+  setStatus: (id: number) => void;
+  setDoing: (id: number) => void;
 }
 
 // hooks 总函数：通过调用该方法，返回想使用的方法
@@ -37,7 +37,6 @@ function useTodo(): IUseTodo {
 
     store.dispatch(SET_TODO, todo);
 
-    console.log(store.state.list);
     setLocalList(store.state.list);
   }
 
@@ -45,11 +44,17 @@ function useTodo(): IUseTodo {
     store.dispatch(SET_TODO_LIST, todoList);
   }
 
-  function removeTodo() {}
+  function removeTodo(id: number) {
+    console.log('remove', id);
+  }
 
-  function setStatus() {}
+  function setStatus(id: number) {
+    console.log('setStatus', id);
+  }
 
-  function setDoing() {}
+  function setDoing(id: number) {
+    console.log('setDoing', id);
+  }
 
   return { setTodo, setTodoList, removeTodo, setStatus, setDoing };
 }

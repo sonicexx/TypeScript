@@ -3,7 +3,7 @@
     <todo-item
       v-for="item of todoList"
       :key="item.id"
-      :item="item.content"
+      :todo="item"
       @removeTodo="removeTodo"
       @setStatus="setStatus"
       @setDoing="setDoing"
