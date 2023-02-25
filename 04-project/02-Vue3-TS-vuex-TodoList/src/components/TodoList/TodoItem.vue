@@ -12,6 +12,7 @@
     <button @click="removeTodo(todo?.id as number)">删除</button>
 
     <button
+      v-if="todo?.status !== FINISHED"
       @click="setDoing(todo?.id as number)"
       :class="todo?.status === DOING ? DOING : WILLDO">
       {{ todo?.status === DOING ? '正在做' : '马上做' }}

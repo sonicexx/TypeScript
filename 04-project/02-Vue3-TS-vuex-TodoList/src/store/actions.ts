@@ -2,7 +2,13 @@
 
 import { IState, ITodo } from '@/typings';
 import { Commit } from 'vuex';
-import { SET_TODO, SET_TODO_LIST } from './actionType';
+import {
+  REMOVE_TODO,
+  SET_DOING,
+  SET_STATUS,
+  SET_TODO,
+  SET_TODO_LIST,
+} from './actionType';
 
 // 接口 action 方法的第一个入参：包含整个 store 对象
 interface ICtx {
@@ -23,5 +29,17 @@ export default {
   // 设置 todoList 的方法：commit SET_TODO_LIST mutation
   [SET_TODO_LIST]({ commit }: ICtx, todoList: ITodo[]) {
     commit(SET_TODO_LIST, todoList);
+  },
+
+  [REMOVE_TODO]({ commit }: ICtx, id: number) {
+    commit(REMOVE_TODO, id);
+  },
+
+  [SET_STATUS]({ commit }: ICtx, id: number) {
+    commit(SET_STATUS, id);
+  },
+
+  [SET_DOING]({ commit }: ICtx, id: number) {
+    commit(SET_DOING, id);
   },
 };

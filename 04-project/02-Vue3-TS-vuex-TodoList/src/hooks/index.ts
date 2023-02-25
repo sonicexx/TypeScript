@@ -1,9 +1,16 @@
 // 处理数据的方法的集中文件
 
-import { SET_TODO, SET_TODO_LIST } from '@/store/actionType';
+import {
+  SET_TODO,
+  SET_TODO_LIST,
+  REMOVE_TODO,
+  SET_STATUS,
+  SET_DOING,
+} from '@/store/actionType';
 import { STORAGE_NAME } from './localStorageTypes';
 import { ITodo, TODO_STATUS } from '@/typings';
 import { Store, useStore } from 'vuex';
+import { watch } from 'vue';
 
 // 接口类型：总 hook 函数
 export interface IUseTodo {
@@ -27,6 +34,16 @@ function useTodo(): IUseTodo {
   //  调用获取 localStorage 中 todoList 数据
   const todoList: ITodo[] = getLocalList();
 
+  // ---- 监控数据变化：由于每次数据变化都需要调用一次 setLocalList 方法
+  // 所以直接 watch store.state.list 数据，只要改变就执行 setLocalList 方法
+  watch(
+    () => store.state.list, //这个数据变化就执行 回执函数
+    (todoList: ITodo[]) => {
+      // 设置 localStorage 存储最新数据
+      setLocalList(todoList);
+    }
+  );
+
   // 加工 todo 数据的方法：从字符串到带有 id 和 status 的对象数据
   function setTodo(value: string): void {
     const todo: ITodo = {
@@ -36,8 +53,6 @@ function useTodo(): IUseTodo {
     };
 
     store.dispatch(SET_TODO, todo);
-
-    setLocalList(store.state.list);
   }
 
   function setTodoList() {
@@ -45,15 +60,15 @@ function useTodo(): IUseTodo {
   }
 
   function removeTodo(id: number) {
-    console.log('remove', id);
+    store.dispatch(REMOVE_TODO, id);
   }
 
   function setStatus(id: number) {
-    console.log('setStatus', id);
+    store.dispatch(SET_STATUS, id);
   }
 
   function setDoing(id: number) {
-    console.log('setDoing', id);
+    store.dispatch(SET_DOING, id);
   }
 
   return { setTodo, setTodoList, removeTodo, setStatus, setDoing };
